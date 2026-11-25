@@ -1,0 +1,58 @@
+{
+  "name": "sprite-creator",
+  "version": "1.11.1",
+  "description": "A focused pixel-art studio for creating sprites, animations, and game-ready assets.",
+  "main": "src/main.js",
+  "author": "Sprite Creator",
+  "license": "MIT",
+  "private": true,
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "electron .",
+    "start": "npm run dev",
+    "check": "node scripts/check-project.js",
+    "build:portable": "node scripts/build-portable.js",
+    "pack:dir": "electron-builder --dir",
+    "pack:win": "electron-builder --win nsis portable --x64"
+  },
+  "devDependencies": {
+    "electron": "45.5.0",
+    "electron-builder": "26.18.0"
+  },
+  "build": {
+    "appId": "com.spritecreator.desktop",
+    "productName": "Sprite Creator",
+    "asar": true,
+    "compression": "maximum",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "win": {
+      "icon": "assets/sprite-creator.ico",
+      "target": [
+        { "target": "nsis", "arch": ["x64"] },
+        { "target": "portable", "arch": ["x64"] }
+      ]
+    },
+    "nsis": {
+      "artifactName": "Sprite-Creator-${version}-Setup.${ext}",
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "deleteAppDataOnUninstall": false
+    },
+    "portable": {
+      "artifactName": "Sprite-Creator-${version}-Portable.${ext}",
+      "requestExecutionLevel": "user"
+    }
+  }
+}

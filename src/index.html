@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#050608">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' file:; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <script src="theme-init.js"></script>
+  <title>Sprite Creator</title>
+  <link rel="icon" type="image/png" href="../assets/sprite-creator.png">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="theme-system.css">
+  <link rel="stylesheet" href="canvas.css">
+  <link rel="stylesheet" href="selection.css">
+  <link rel="stylesheet" href="theme-polish.css">
+</head>
+<body>
+  <section id="splash" class="brand-splash" aria-label="Sprite Creator opening sequence">
+    <div class="brand-splash-grid" aria-hidden="true"></div>
+    <div class="brand-splash-glow glow-a" aria-hidden="true"></div>
+    <div class="brand-splash-glow glow-b" aria-hidden="true"></div>
+    <div class="brand-splash-ring ring-a" aria-hidden="true"></div>
+    <div class="brand-splash-ring ring-b" aria-hidden="true"></div>
+
+    <div class="intro-stage" id="introStage">
+      <div class="intro-emblem" aria-hidden="true">
+        <span class="intro-pixel ip1"></span><span class="intro-pixel ip2"></span><span class="intro-pixel ip3"></span>
+        <span class="intro-pixel ip4"></span><span class="intro-pixel ip5"></span><span class="intro-pixel ip6"></span>
+        <span class="intro-pixel ip7"></span><span class="intro-pixel ip8"></span><span class="intro-pixel ip9"></span>
+      </div>
+      <div class="intro-wordmark">
+        <div class="intro-eyebrow">A CREATIVE SPACE FOR PIXELS</div>
+        <h1>SPRITE<span>CREATOR</span></h1>
+        <p>Make small things extraordinary.</p>
+      </div>
+      <div class="intro-caption">TOOLS FOR THE WORLDS YOU IMAGINE</div>
+    </div>
+
+    <section class="welcome-card" id="welcomeCard" aria-live="polite" aria-labelledby="welcomeTitle">
+      <div class="welcome-kicker"><span class="welcome-kicker-dot"></span> YOUR CREATIVE SPACE IS READY</div>
+      <h2 id="welcomeTitle">Thanks for creating<br>with us.</h2>
+      <p>Every world starts with a single pixel.<br>Let's make something extraordinary.</p>
+      <button id="enterStudioBtn" class="welcome-enter" type="button">ENTER THE STUDIO <span>↗</span></button>
+      <div class="welcome-note">BUILT FOR PIXEL ARTISTS &amp; GAME MAKERS</div>
+    </section>
+
+    <div class="brand-splash-footer">
+      <button id="skipIntroBtn" class="intro-skip" type="button">Skip animation <kbd>↵</kbd></button>
+      <span id="introStatus">INITIALIZING CREATIVE SPACE</span>
+      <span class="intro-version">SPRITE CREATOR <b>1.11.1</b></span>
+    </div>
+  </section>
+
+  <main id="app" class="app-shell hidden" aria-label="Sprite Creator editor">
+    <header class="topbar">
+      <div class="brand-lockup">
+        <img class="brand-mark" src="../assets/sprite-creator.png" alt="" aria-hidden="true">
+        <div class="brand-name">sprite<span>creator</span></div>
+      </div>
+      <nav class="main-menu" aria-label="Main menu">
+        <button class="menu-item" data-menu="file">File</button>
+        <button class="menu-item" data-menu="edit">Edit</button>
+        <button class="menu-item" data-menu="sprite">Sprite</button>
+        <button class="menu-item" data-menu="animation">Animation</button>
+        <button class="menu-item" data-menu="assets">Assets</button>
+        <button class="menu-item" data-menu="view">View</button>
+      </nav>
+      <div class="top-actions">
+        <span id="saveStatus" class="save-status"><i></i> All changes saved</span>
+        <button id="themeBtn" class="button button-quiet theme-toggle" type="button" aria-label="Theme options" title="Choose a workspace theme">◐ Themes</button>
+        <button id="tipsBtn" class="button button-quiet tips-toggle" type="button" aria-pressed="true" title="Tutorial tips appear for 15 seconds after opening. Click to turn them off.">✦ Tips On</button>
+        <button id="helpBtn" class="icon-button top-help" title="Help & shortcuts">?</button>
+        <button id="saveBtn" class="button button-quiet"><span class="button-icon">↓</span> Save</button>
+        <button id="exportBtn" class="button button-primary"><span class="button-icon">↗</span> Export</button>
+      </div>
+    </header>
+
+    <section class="documentbar">
+      <div class="document-title-wrap">
+        <div class="document-dot"></div>
+        <input id="projectName" class="project-name" value="Untitled Sprite" aria-label="Project name" maxlength="60">
+        <span class="document-ext">.spritecreator</span>
+      </div>
+      <div class="document-meta">
+        <button id="newBtn" class="doc-action"><span>＋</span> New</button>
+        <button id="openBtn" class="doc-action"><span>↗</span> Open</button>
+        <span class="meta-divider"></span>
+        <span id="canvasSizeLabel">32 × 32 px</span>
+        <span class="meta-divider"></span>
+        <span id="zoomLabel">800%</span>
+      </div>
+    </section>
+
+    <div class="editor-layout">
+      <aside class="tool-panel panel">
+        <div class="panel-heading"><span>TOOLS</span><span class="panel-heading-muted">DRAW</span></div>
+        <div class="tool-grid" id="toolGrid">
+          <button class="tool-button active" data-tool="pencil" title="Pencil (B)"><span class="tool-glyph">✎</span><small>B</small></button>
+          <button class="tool-button" data-tool="eraser" title="Eraser (E)"><span class="tool-glyph">◩</span><small>E</small></button>
+          <button class="tool-button" data-tool="fill" title="Paint bucket (G)"><span class="tool-glyph">▧</span><small>G</small></button>
+          <button class="tool-button" data-tool="eyedropper" title="Eyedropper (I)"><span class="tool-glyph">◉</span><small>I</small></button>
+          <button class="tool-button" data-tool="line" title="Line (L)"><span class="tool-glyph">／</span><small>L</small></button>
+          <button class="tool-button" data-tool="rect" title="Rectangle (U)"><span class="tool-glyph">□</span><small>U</small></button>
+          <button class="tool-button" data-tool="ellipse" title="Ellipse (O)"><span class="tool-glyph">○</span><small>O</small></button>
+          <button class="tool-button" data-tool="select" title="Select, move, and resize (M)"><span class="tool-glyph">▱</span><small>M</small></button>
+          <button class="tool-button" data-tool="hand" title="Hand / pan (H)"><span class="tool-glyph">✋</span><small>H</small></button>
+        </div>
+        <div class="panel-separator"></div>
+        <div class="tool-options">
+          <div class="section-label">BRUSH SIZE <b id="brushSizeValue">1 px</b></div>
+          <input id="brushSize" class="range-control" type="range" min="1" max="16" value="1">
+          <div class="range-ends"><span>1</span><span>16</span></div>
+          <div class="section-label option-label">SHAPE</div>
+          <div class="segmented" id="shapeMode">
+            <button class="selected" data-mode="outline">Outline</button>
+            <button data-mode="fill">Filled</button>
+          </div>
+          <div class="section-label option-label">GRID</div>
+          <label class="switch-row"><span>Pixel grid</span><input id="gridToggle" type="checkbox" checked><i></i></label>
+          <label class="switch-row"><span>Solid backdrop</span><input id="previewToggle" type="checkbox"><i></i></label>
+        </div>
+        <div class="panel-spacer"></div>
+        <div class="tool-hint tutorial-tip" id="toolTutorialTip"><span class="hint-spark">✦</span><span>Small pixels.<br><b>Big ideas.</b></span></div>
+      </aside>
+
+      <section class="center-stage">
+        <div class="canvas-toolbar">
+          <div class="canvas-tool-left">
+            <span class="context-label">CANVAS</span>
+            <span class="toolbar-divider"></span>
+            <button id="zoomOutBtn" class="mini-icon" title="Zoom out">−</button>
+            <button id="zoomFitBtn" class="zoom-readout" title="Fit canvas to available area" aria-label="Fit canvas to available area">800%</button>
+            <button id="zoomInBtn" class="mini-icon" title="Zoom in">＋</button>
+            <span class="toolbar-divider"></span>
+            <button id="gridBtn" class="toolbar-toggle active" title="Toggle pixel grid">▦ Grid</button>
+            <button id="onionBtn" class="toolbar-toggle" title="Toggle onion skin">◌ Onion</button>
+          </div>
+          <div class="canvas-empty-hint" id="canvasHint" role="status" aria-live="polite">
+            <span class="hint-key">B</span><span class="hint-copy">Select a tool and start drawing</span>
+          </div>
+          <div class="canvas-tool-right">
+            <span id="cursorPosition">X: 0&nbsp;&nbsp; Y: 0</span>
+            <span class="toolbar-divider"></span>
+            <button id="centerCanvasBtn" class="mini-icon" title="Center canvas">⌖</button>
+            <button id="focusModeBtn" class="toolbar-toggle focus-mode-toggle" title="Enter focus drawing mode (F)" aria-pressed="false">◩ Focus</button>
+          </div>
+        </div>
+
+        <div class="canvas-work-area">
+          <div id="canvasViewport" class="canvas-viewport">
+            <div class="canvas-surround">
+              <div id="canvasStack" class="canvas-stack">
+                <canvas id="onionCanvas" class="canvas-layer"></canvas>
+                <canvas id="displayCanvas" class="canvas-layer"></canvas>
+                <canvas id="overlayCanvas" class="canvas-layer overlay-layer"></canvas>
+                <div id="selectionFrame" class="selection-frame hidden" aria-hidden="true"></div>
+              </div>
+            </div>
+          </div>
+          <aside id="selectionToolbar" class="selection-dock" role="toolbar" aria-label="Selection actions" aria-orientation="vertical">
+            <div class="selection-dock-heading"><span class="selection-dock-mark" aria-hidden="true">▱</span><span>SELECT</span></div>
+            <div class="selection-dock-idle" id="selectionIdle">
+              <p>Work with part of your sprite.</p>
+              <button id="selectionActivateBtn" class="selection-dock-activate" type="button" title="Activate selection tool (M)"><span aria-hidden="true">▱</span><span>Select</span></button>
+              <kbd>M</kbd>
+            </div>
+            <div class="selection-dock-actions" id="selectionActions">
+              <p id="selectionHint" class="selection-dock-hint" aria-live="polite">Drag on the canvas to select pixels.</p>
+              <div class="selection-dock-group" aria-label="Clipboard actions">
+                <span class="selection-dock-group-label">CLIPBOARD</span>
+                <button id="selectionCopyBtn" class="selection-dock-button" type="button" title="Copy selection (Ctrl+C)" aria-label="Copy selection"><span class="selection-dock-icon" aria-hidden="true">▢</span><span>Copy</span></button>
+                <button id="selectionCutBtn" class="selection-dock-button" type="button" title="Cut selection (Ctrl+X)" aria-label="Cut selection"><span class="selection-dock-icon" aria-hidden="true">✂</span><span>Cut</span></button>
+                <button id="selectionPasteBtn" class="selection-dock-button" type="button" title="Paste selection (Ctrl+V)" aria-label="Paste selection"><span class="selection-dock-icon" aria-hidden="true">▣</span><span>Paste</span></button>
+              </div>
+              <div class="selection-dock-divider"></div>
+              <div class="selection-dock-group" aria-label="Transform actions">
+                <span class="selection-dock-group-label">TRANSFORM</span>
+                <button id="selectionFlipHBtn" class="selection-dock-button" type="button" title="Flip selection horizontally" aria-label="Flip selection horizontally"><span class="selection-dock-icon" aria-hidden="true">↔</span><span>Flip H</span></button>
+                <button id="selectionFlipVBtn" class="selection-dock-button" type="button" title="Flip selection vertically" aria-label="Flip selection vertically"><span class="selection-dock-icon" aria-hidden="true">↕</span><span>Flip V</span></button>
+                <button id="selectionRotateBtn" class="selection-dock-button" type="button" title="Rotate selection 90 degrees clockwise" aria-label="Rotate selection 90 degrees"><span class="selection-dock-icon" aria-hidden="true">↻</span><span>Rotate</span></button>
+              </div>
+              <div class="selection-dock-divider"></div>
+              <div class="selection-dock-confirm">
+                <button id="selectionApplyBtn" class="selection-dock-button selection-apply hidden" type="button" title="Apply move or resize (Enter)"><span class="selection-dock-icon" aria-hidden="true">✓</span><span>Apply</span></button>
+                <button id="selectionCancelBtn" class="selection-dock-button selection-cancel hidden" type="button" title="Cancel move or resize (Escape)"><span class="selection-dock-icon" aria-hidden="true">×</span><span>Cancel</span></button>
+                <button id="selectionDeselectBtn" class="selection-dock-button selection-deselect" type="button" title="Clear selection (Escape)" aria-label="Clear selection"><span class="selection-dock-icon" aria-hidden="true">⊘</span><span>Deselect</span></button>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        <div class="colorbar">
+          <div class="color-current-wrap">
+            <div class="color-duo"><button id="backgroundColor" class="color-bg" title="Background color"></button><button id="foregroundColor" class="color-fg" title="Foreground color"></button></div>
+            <div class="color-current-label"><b>FOREGROUND · HEX</b><input id="hexColorInput" class="hex-color-input" type="text" value="#18212B" maxlength="7" spellcheck="false" aria-label="Foreground HEX color" title="Enter a six-digit HEX color and press Enter"></div>
+          </div>
+          <input id="colorInput" type="color" value="#18212B" aria-label="Choose foreground color"><input id="backgroundColorInput" type="color" value="#F3F6FA" aria-label="Choose background color">
+          <div class="palette-divider"></div>
+          <div class="palette-title">QUICK PALETTE</div>
+          <div id="paletteSwatches" class="palette-swatches"></div>
+          <button id="addSwatchBtn" class="add-swatch" title="Choose and add a color to your palette" aria-label="Add color">＋ Add color</button>
+          <button id="resetPaletteBtn" class="palette-more" title="Reset palette">↺</button>
+        </div>
+      </section>
+
+      <aside class="right-panel panel">
+        <section class="layers-section">
+          <div class="panel-heading"><span>LAYERS</span><span id="layerCount" class="count-pill">3</span><button id="addLayerBtn" class="panel-add" title="Add layer">＋</button></div>
+          <div class="layer-list" id="layerList"></div>
+          <div class="layer-actions">
+            <button id="moveLayerUp" title="Move layer up">↑</button>
+            <button id="moveLayerDown" title="Move layer down">↓</button>
+            <button id="deleteLayerBtn" class="danger-hover" title="Delete layer">⌫</button>
+          </div>
+        </section>
+        <div class="panel-separator"></div>
+        <section class="properties-section">
+          <div class="panel-heading"><span>PROPERTIES</span></div>
+          <div class="property-row"><span>Layer opacity</span><b id="opacityValue">100%</b></div>
+          <input id="layerOpacity" class="range-control" type="range" min="0" max="100" value="100">
+          <div class="property-row compact"><span>Blend mode</span><span class="property-neutral">Normal</span></div>
+          <div class="property-row compact"><span>Cel</span><span id="celPosition" class="property-value">01 / 01</span></div>
+        </section>
+        <div class="panel-spacer"></div>
+        <div class="right-tip tutorial-tip" id="layerTutorialTip"><span>✦</span><div><b>Layer tip</b><p>Keep outlines, colors and details on separate layers for easier edits.</p></div></div>
+      </aside>
+    </div>
+
+    <section class="timeline-panel">
+      <div class="timeline-header">
+        <div class="timeline-title"><span class="timeline-icon">▥</span><b>ANIMATION</b><span id="frameCountLabel" class="frame-count">1 FRAME</span></div>
+        <div class="timeline-controls">
+          <button id="firstFrameBtn" class="transport-btn" title="First frame">|◀</button>
+          <button id="prevFrameBtn" class="transport-btn" title="Previous frame">◀</button>
+          <button id="playBtn" class="play-btn" title="Play animation">▶</button>
+          <button id="nextFrameBtn" class="transport-btn" title="Next frame">▶</button>
+          <button id="lastFrameBtn" class="transport-btn" title="Last frame">▶|</button>
+          <span class="timeline-divider"></span>
+          <span class="fps-label">FPS</span><input id="fpsInput" class="fps-input" type="number" min="1" max="60" value="8">
+          <select id="playbackClipSelect" class="clip-select" title="Preview all frames or a named animation clip"><option value="all">All frames</option></select>
+          <label class="loop-switch" title="Loop animation preview"><input id="loopPlayback" type="checkbox" checked><span>Loop</span></label>
+          <button id="frameTimingBtn" class="frame-tags-btn" title="Set timing for the selected frame">Timing</button>
+          <button id="frameTagsBtn" class="frame-tags-btn" title="Create named animation clips">Tags</button>
+          <label class="onion-switch"><input id="onionToggle" type="checkbox"><span></span> Onion skin</label>
+        </div>
+        <div class="timeline-actions"><button id="duplicateFrameBtn" title="Duplicate frame">▣</button><button id="addFrameBtn" class="add-frame-btn" title="Add frame">＋ Frame</button><button id="deleteFrameBtn" title="Delete frame">⌫</button></div>
+      </div>
+      <div class="timeline-body" id="timelineBody">
+        <div class="timeline-layer-label"><span class="tiny-layer-dot"></span><span id="timelineLayerName">Outline</span></div>
+        <div id="frameStrip" class="frame-strip"></div>
+      </div>
+      <div class="timeline-footer"><span>DRAG FRAMES TO REORDER <span class="footer-dot">·</span> SELECT A FRAME TO EDIT</span><span id="playbackStatus">READY TO ANIMATE</span></div>
+    </section>
+
+    <footer class="statusbar"><span id="statusMessage">Ready. Your next pixel starts here.</span><span><kbd>Ctrl</kbd> <b>+</b> <kbd>Z</kbd> Undo <i></i> <kbd>Space</kbd> Pan <i></i> <kbd>Ctrl</kbd> <b>+</b> <kbd>S</kbd> Save</span></footer>
+  </main>
+
+  <section id="exitScreen" class="exit-screen hidden" aria-label="Sprite Creator goodbye screen" aria-live="polite">
+    <div class="exit-screen-grid" aria-hidden="true"></div>
+    <div class="exit-screen-glow" aria-hidden="true"></div>
+    <div class="exit-pixel-cloud" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="exit-content">
+      <img class="exit-brand-mark" src="../assets/sprite-creator.png" alt="" aria-hidden="true">
+      <div class="exit-kicker">SPRITE CREATOR <b>•</b> CREATIVE SESSION COMPLETE</div>
+      <h2>Thanks for creating<br><span>with us.</span></h2>
+      <p class="exit-message">Every pixel is a little piece of a world.<br>Keep making yours. See you next time.</p>
+      <div class="exit-social-heading">FOLLOW THE NEXT PIXEL</div>
+      <div class="exit-socials" id="exitSocials"></div>
+      <div class="exit-footer-row">
+        <span id="exitStatus">SAVING YOUR CREATIVE SPACE…</span>
+        <button id="exitNowBtn" class="exit-now-button" type="button">CLOSE NOW <span>↗</span></button>
+      </div>
+    </div>
+    <div class="exit-bottom-line">MADE WITH PIXELS <i></i> SEE YOU IN THE NEXT WORLD</div>
+  </section>
+
+  <div id="modalHost"></div>
+  <div id="toastHost" class="toast-host" aria-live="polite"></div>
+  <input id="fallbackOpenInput" type="file" accept=".spritecreator,.json,application/json" hidden>
+  <input id="importImageInput" type="file" accept="image/png,image/webp,image/jpeg" hidden>
+  <input id="importSheetInput" type="file" accept="image/png,image/webp,image/jpeg" hidden>
+  <script src="brand-config.js"></script>
+  <script src="renderer.js"></script>
+</body>
+</html>

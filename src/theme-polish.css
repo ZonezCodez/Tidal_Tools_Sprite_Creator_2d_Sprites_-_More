@@ -1,0 +1,346 @@
+/* Sprite Creator 1.11.1 — final high-contrast surface system.
+   UI theme and artboard theme are intentionally independent. */
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #050608;
+  --surface: #0C0E12;
+  --surface-2: #14181E;
+  --surface-3: #1D232B;
+  --surface-raised: #262D36;
+  --line: #323A45;
+  --line-soft: #252C35;
+  --text: #F4F6F8;
+  --muted: #C1C8D1;
+  --dim: #929CA9;
+  --cyan: #C8FF3E;
+  --cyan-deep: #82AA1B;
+  --violet: #B69AFF;
+  --coral: #FF6687;
+  --amber: #FFC65D;
+  --green: #55DFA5;
+  --button-text: #111607;
+  --input-bg: #090B0F;
+  --hover: rgba(200,255,62,.10);
+  --selected: rgba(200,255,62,.16);
+  --focus-ring: #C8FF3E;
+  --shadow: 0 18px 54px rgba(0,0,0,.58);
+
+  /* Legacy component aliases, retained for compatibility with older rules. */
+  --p-101720: #050608;
+  --p-111820: #0A0C10;
+  --p-111a23: #0B0E12;
+  --p-111b24: #0D1015;
+  --p-111c25: #0D1015;
+  --p-121b24: #0D1015;
+  --p-121c26: #0E1116;
+  --p-151f29: #0D1015;
+  --p-15232f: #11151B;
+  --p-17222c: #11151B;
+  --p-17232d: #14191F;
+  --p-18222d: #101419;
+  --p-18232d: #101419;
+  --p-19232d: #141920;
+  --p-19242e: #141920;
+  --p-1d2935: #171D24;
+  --p-202c37: #1B222A;
+  --p-202d39: #1B222A;
+  --p-22313d: #202832;
+  --p-23313e: #222A34;
+  --p-23323e: #242D37;
+  --p-243241: #252E38;
+  --p-253442: #29323D;
+  --p-263440: #2A333E;
+  --p-293541: #2D3742;
+  --p-2a3948: #323C48;
+  --p-2c3b47: #343E4A;
+  --p-2c3d4a: #37414D;
+  --p-32414d: #46515E;
+  --p-33434f: #4A5562;
+  --p-435563: #677381;
+  --p-536474: #788492;
+  --p-5c6d7e: #8994A0;
+  --p-647686: #929DA9;
+  --p-718493: #A0AAB5;
+  --p-8292a3: #B1BAC4;
+  --p-aab5bd: #CBD1D8;
+  --p-aab4bc: #CBD1D8;
+  --p-c8d5df: #E0E4E9;
+  --p-cfd6dc: #E3E7EB;
+  --p-edf3f8: #F4F6F8;
+  --p-f0f0f0: #F4F6F8;
+  --p-2bd6d0: #C8FF3E;
+  --p-157e82: #82AA1B;
+  --p-a28aff: #B69AFF;
+  --p-ff786a: #FF6687;
+  --p-f4bf62: #FFC65D;
+  --p-69d6a1: #55DFA5;
+  --rgb-04090e: 5,6,8;
+  --rgb-121c26: 20,24,30;
+  --rgb-1a2632: 37,45,55;
+  --rgb-2bd6d0: 200,255,62;
+  --rgb-5c7789: 145,156,169;
+  --rgb-a28aff: 182,154,255;
+  --rgb-e0eff9: 244,246,248;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #E9EDF2;
+  --surface: #F8FAFC;
+  --surface-2: #E7ECF1;
+  --surface-3: #D8E0E8;
+  --surface-raised: #FFFFFF;
+  --line: #B8C2CE;
+  --line-soft: #D1D9E2;
+  --text: #17212B;
+  --muted: #435160;
+  --dim: #637282;
+  --cyan: #557B00;
+  --cyan-deep: #3F5E00;
+  --violet: #7047BE;
+  --coral: #C83356;
+  --amber: #865600;
+  --green: #087A54;
+  --button-text: #FFFFFF;
+  --input-bg: #FFFFFF;
+  --hover: rgba(85,123,0,.10);
+  --selected: rgba(85,123,0,.15);
+  --focus-ring: #557B00;
+  --shadow: 0 16px 42px rgba(23,35,49,.16);
+
+  --p-101720: #E9EDF2;
+  --p-111820: #F8FAFC;
+  --p-111a23: #F4F7FA;
+  --p-111b24: #EFF3F7;
+  --p-111c25: #EFF3F7;
+  --p-121b24: #EFF3F7;
+  --p-121c26: #EAF0F5;
+  --p-151f29: #E4EAF0;
+  --p-15232f: #DFE6ED;
+  --p-17222c: #E5EAF0;
+  --p-17232d: #E1E7EE;
+  --p-18222d: #F8FAFC;
+  --p-18232d: #F8FAFC;
+  --p-19232d: #E7ECF1;
+  --p-19242e: #E7ECF1;
+  --p-1d2935: #DDE4EB;
+  --p-202c37: #D7E0E8;
+  --p-202d39: #D7E0E8;
+  --p-22313d: #CDD7E1;
+  --p-23313e: #C9D4DF;
+  --p-23323e: #C5D1DC;
+  --p-243241: #C3CFDB;
+  --p-253442: #BDC9D5;
+  --p-263440: #B8C5D2;
+  --p-293541: #B1BFCC;
+  --p-2a3948: #AAB8C6;
+  --p-2c3b47: #A4B3C1;
+  --p-2c3d4a: #9EAEBD;
+  --p-32414d: #8D9DAC;
+  --p-33434f: #8495A5;
+  --p-435563: #647587;
+  --p-536474: #58697B;
+  --p-5c6d7e: #536476;
+  --p-647686: #4C5D6F;
+  --p-718493: #465769;
+  --p-8292a3: #435160;
+  --p-aab5bd: #303D4A;
+  --p-aab4bc: #303D4A;
+  --p-c8d5df: #22303D;
+  --p-cfd6dc: #1E2B37;
+  --p-edf3f8: #17212B;
+  --p-f0f0f0: #FFFFFF;
+  --p-2bd6d0: #557B00;
+  --p-157e82: #3F5E00;
+  --p-a28aff: #7047BE;
+  --p-ff786a: #C83356;
+  --p-f4bf62: #865600;
+  --p-69d6a1: #087A54;
+  --rgb-04090e: 233,237,242;
+  --rgb-121c26: 231,236,241;
+  --rgb-1a2632: 197,209,220;
+  --rgb-2bd6d0: 85,123,0;
+  --rgb-5c7789: 83,100,118;
+  --rgb-a28aff: 112,71,190;
+  --rgb-e0eff9: 23,33,43;
+}
+
+html, body, .app-shell {
+  background: var(--bg) !important;
+  color: var(--text) !important;
+}
+
+.topbar, .panel, .timeline-panel, .colorbar, .canvas-toolbar, .statusbar {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+}
+
+.documentbar {
+  background: var(--surface-2) !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+}
+
+.menu-item { color: var(--muted) !important; }
+.menu-item:hover, .menu-item.active {
+  background: var(--surface-3) !important;
+  color: var(--text) !important;
+}
+
+.button, .button-quiet, .icon-button, .doc-action, .mini-icon, .toolbar-toggle,
+.transport-btn, .frame-tags-btn, .layer-actions button, .timeline-actions button,
+.panel-add, .add-swatch, .palette-more, .selection-dock-button, .selection-dock-activate {
+  border-color: var(--line) !important;
+}
+
+.button-primary, .play-btn, .modal-button.primary, .selection-dock-apply,
+.selection-dock-button.selection-apply {
+  background: var(--cyan) !important;
+  color: var(--button-text) !important;
+  border-color: var(--cyan) !important;
+}
+
+.button-primary:hover, .play-btn:hover, .modal-button.primary:hover,
+.selection-dock-apply:hover, .selection-dock-button.selection-apply:hover {
+  filter: brightness(1.06);
+}
+
+.tool-button.active, .layer-row.active, .frame-cell.active, .swatch.active,
+.toolbar-toggle.active, .tips-toggle.tips-enabled {
+  border-color: var(--cyan) !important;
+  box-shadow: 0 0 0 1px color-mix(in srgb,var(--cyan) 32%,transparent);
+}
+
+input, select, textarea, .project-name, .layer-name-input, .hex-color-input {
+  color: var(--text);
+}
+
+:focus-visible {
+  outline-color: var(--focus-ring) !important;
+}
+
+/* The artboard is a neutral, medium-gray work surface in the Onyx canvas mode.
+   Transparent artwork remains distinct without a blue cast or oversized checks. */
+:root[data-canvas-theme="dark"] {
+  --canvas-workspace: #25282E;
+  --checker-a: #747B84;
+  --checker-b: #636A73;
+  --canvas-solid: #707780;
+  --canvas-edge: rgba(248,250,252,.38);
+  --pixel-grid-line: rgba(16,20,26,.40);
+  --artboard-shadow: 0 16px 42px rgba(0,0,0,.36), 0 0 0 1px rgba(248,250,252,.22);
+}
+
+:root[data-canvas-theme="light"] {
+  --canvas-workspace: #C5C9CF;
+  --checker-a: #F7F9FB;
+  --checker-b: #DFE4E9;
+  --canvas-solid: #F3F5F7;
+  --canvas-edge: rgba(30,40,52,.30);
+  --pixel-grid-line: rgba(28,37,48,.30);
+  --artboard-shadow: 0 16px 40px rgba(35,45,56,.20), 0 0 0 1px rgba(30,40,52,.20);
+}
+
+.canvas-viewport {
+  background: var(--canvas-workspace) !important;
+  background-image: none !important;
+}
+
+.canvas-stack {
+  outline: 1px solid var(--canvas-edge) !important;
+  outline-offset: 0;
+  box-shadow: var(--artboard-shadow) !important;
+}
+
+.canvas-stack::before {
+  background-color: var(--checker-a) !important;
+  background-image: conic-gradient(var(--checker-b) 25%,var(--checker-a) 0 50%,var(--checker-b) 0 75%,var(--checker-a) 0) !important;
+  background-size: var(--checker-size,8px) var(--checker-size,8px) !important;
+}
+
+.canvas-stack.checker-off { background: var(--canvas-solid) !important; }
+.canvas-stack.checker-off::before { display: none !important; }
+.canvas-stack.grid-on::after {
+  background-image: linear-gradient(90deg,var(--pixel-grid-line) 0 1px,transparent 1px 100%),
+    linear-gradient(180deg,var(--pixel-grid-line) 0 1px,transparent 1px 100%) !important;
+  background-size: var(--pixel-size) var(--pixel-size) !important;
+  opacity: 1 !important;
+  mix-blend-mode: normal !important;
+}
+
+.frame-cell canvas {
+  background-color: var(--checker-a) !important;
+  background-image: linear-gradient(45deg,var(--checker-b) 25%,transparent 25%),
+    linear-gradient(-45deg,var(--checker-b) 25%,transparent 25%),
+    linear-gradient(45deg,transparent 75%,var(--checker-b) 75%),
+    linear-gradient(-45deg,transparent 75%,var(--checker-b) 75%) !important;
+}
+
+.canvas-viewport::-webkit-scrollbar-track { background: var(--surface) !important; }
+.canvas-viewport::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg,var(--surface-3),var(--dim)) !important;
+  border: 3px solid var(--surface) !important;
+}
+.canvas-viewport::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg,var(--cyan),var(--violet)) !important;
+}
+
+.brand-name span { color: var(--cyan) !important; }
+.modal, .menu-popover, .help-dialog, .export-dialog {
+  color: var(--text);
+}
+
+@media (max-width: 1180px) {
+  .topbar { gap: 14px; padding-inline: 12px; }
+  .brand-lockup { min-width: 150px; }
+  .menu-item { padding-inline: 7px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+
+/* 1.11.1 — final artboard surround and official product mark.
+   Keep the gray artboard/checker separate from the darker workspace around it. */
+:root[data-canvas-theme="dark"] {
+  --canvas-workspace: #25282E;
+  --checker-a: #747B84;
+  --checker-b: #636A73;
+  --canvas-solid: #707780;
+}
+:root[data-canvas-theme="light"] {
+  --canvas-workspace: #C5C9CF;
+  --checker-a: #F7F8F9;
+  --checker-b: #DDE1E5;
+  --canvas-solid: #F3F5F7;
+}
+.brand-mark {
+  display: block !important;
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px;
+  flex: 0 0 30px;
+  object-fit: cover;
+  border-radius: 7px;
+  transform: none !important;
+  box-shadow: 0 0 0 1px rgba(200,255,62,.18), 0 2px 10px rgba(0,0,0,.24);
+}
+
+.exit-brand-mark {
+  display: block !important;
+  width: 68px !important;
+  height: 68px !important;
+  margin: 0 auto 22px !important;
+  object-fit: cover;
+  border-radius: 16px;
+  transform: none !important;
+  box-shadow: 0 0 26px rgba(200,255,62,.16), 0 0 34px rgba(182,154,255,.12);
+}

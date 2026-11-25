@@ -1,0 +1,441 @@
+/* Sprite Creator 1.9.2 — unified Onyx + Prism editor system.
+   This final token layer intentionally supersedes legacy component palette values. */
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0B0E13;
+  --surface: #11161E;
+  --surface-2: #171E28;
+  --surface-3: #222C38;
+  --surface-raised: #293544;
+  --line: #354252;
+  --line-soft: #283341;
+  --text: #F3F6FA;
+  --muted: #C1CAD5;
+  --dim: #929EAE;
+  --cyan: #C7FF43;
+  --cyan-deep: #789D22;
+  --violet: #B58AFF;
+  --coral: #FF5D7A;
+  --amber: #FFCA58;
+  --green: #55DEA5;
+  --button-text: #11170A;
+  --input-bg: #0D1219;
+  --hover: rgba(199,255,67,.105);
+  --selected: rgba(199,255,67,.15);
+  --canvas-bg: #151C26;
+  --checker-a: #222B37;
+  --checker-b: #19212B;
+  --focus-ring: #C7FF43;
+  --shadow: 0 18px 54px rgba(0,0,0,.48);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #F1F4F7;
+  --surface: #FCFDFE;
+  --surface-2: #E9EEF3;
+  --surface-3: #DDE5ED;
+  --surface-raised: #FFFFFF;
+  --line: #BAC6D3;
+  --line-soft: #D2DBE4;
+  --text: #18212B;
+  --muted: #465363;
+  --dim: #687687;
+  --cyan: #557B00;
+  --cyan-deep: #3E5E00;
+  --violet: #7047BE;
+  --coral: #C83155;
+  --amber: #875600;
+  --green: #087A54;
+  --button-text: #FFFFFF;
+  --input-bg: #FFFFFF;
+  --hover: rgba(85,123,0,.09);
+  --selected: rgba(85,123,0,.13);
+  --canvas-bg: #E5EBF1;
+  --checker-a: #F7F9FB;
+  --checker-b: #E4EAF0;
+  --focus-ring: #557B00;
+  --shadow: 0 16px 42px rgba(23,35,49,.14);
+}
+
+:root[data-theme="dark"],:root[data-theme="light"] {
+  --accent: var(--cyan);
+  --accent-strong: var(--cyan-deep);
+}
+
+html,body {
+  background: var(--bg) !important;
+  color: var(--text) !important;
+}
+
+body,.app-shell {
+  background: var(--bg) !important;
+  color: var(--text) !important;
+}
+
+.app-shell {
+  border-color: var(--line);
+}
+
+.topbar,.panel,.timeline-panel,.colorbar,.canvas-toolbar,.statusbar {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+}
+
+.documentbar {
+  background: var(--surface-2) !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+}
+
+.center-stage,.canvas-viewport {
+  background-color: var(--canvas-bg) !important;
+}
+
+.canvas-viewport {
+  background-image: radial-gradient(color-mix(in srgb,var(--text) 12%,transparent) .7px,transparent .7px) !important;
+  background-size: 8px 8px !important;
+  scrollbar-color: var(--surface-3) var(--surface);
+}
+
+.canvas-viewport::-webkit-scrollbar-track {
+  background: var(--surface) !important;
+}
+
+.canvas-viewport::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg,var(--surface-3),var(--dim)) !important;
+  border: 3px solid var(--surface) !important;
+}
+
+.canvas-viewport::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg,var(--cyan),var(--violet)) !important;
+}
+
+.menu-item {
+  color: var(--muted) !important;
+}
+
+.menu-item:hover,.menu-item.active {
+  background: var(--surface-3) !important;
+  color: var(--text) !important;
+}
+
+.brand-name,.project-name,.panel-heading,.timeline-title b,.property-row b,.property-value,.color-current-label span,.zoom-readout {
+  color: var(--text) !important;
+}
+
+.panel-heading-muted,.document-meta,.document-ext,.save-status,.section-label,.property-row,.fps-label,.onion-switch,.timeline-footer,.statusbar,.context-label,#cursorPosition {
+  color: var(--muted) !important;
+}
+
+.button,.button-quiet,.icon-button,.doc-action,.mini-icon,.toolbar-toggle,.transport-btn,.frame-tags-btn,.layer-actions button,.timeline-actions button,.panel-add,.add-swatch,.palette-more {
+  background: var(--surface-2) !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+}
+
+.button-quiet:hover,.icon-button:hover,.doc-action:hover,.mini-icon:hover,.toolbar-toggle:hover,.transport-btn:hover,.frame-tags-btn:hover,.layer-actions button:hover,.timeline-actions button:hover,.panel-add:hover,.add-swatch:hover,.palette-more:hover {
+  background: var(--surface-3) !important;
+  border-color: var(--cyan) !important;
+  color: var(--cyan) !important;
+}
+
+.button-primary,.play-btn,.modal-button.primary,.selection-toolbar .selection-apply {
+  background: var(--cyan) !important;
+  color: var(--button-text) !important;
+  border-color: var(--cyan) !important;
+  box-shadow: 0 4px 18px color-mix(in srgb,var(--cyan) 22%,transparent) !important;
+}
+
+.button-primary:hover,.play-btn:hover,.modal-button.primary:hover,.selection-toolbar .selection-apply:hover {
+  filter: brightness(1.08);
+}
+
+.tool-button {
+  background: var(--surface-2) !important;
+  color: var(--muted) !important;
+  border: 1px solid var(--line-soft) !important;
+}
+
+.tool-button:hover {
+  background: var(--surface-3) !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+}
+
+.tool-button.active {
+  background: var(--selected) !important;
+  border-color: var(--cyan) !important;
+  color: var(--cyan) !important;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb,var(--cyan) 25%,transparent),0 0 16px color-mix(in srgb,var(--cyan) 9%,transparent) !important;
+}
+
+.tool-button small {
+  color: var(--dim) !important;
+}
+
+.tool-button.active small {
+  color: var(--cyan) !important;
+}
+
+.range-control {
+  accent-color: var(--cyan);
+}
+
+.range-control::-webkit-slider-thumb {
+  background: var(--cyan) !important;
+  border-color: var(--surface) !important;
+  box-shadow: 0 0 0 2px var(--cyan) !important;
+}
+
+.segmented,.frame-count,.layer-row,.frame-cell,.help-item {
+  background: var(--surface-2) !important;
+  color: var(--muted) !important;
+  border-color: var(--line-soft) !important;
+}
+
+.segmented button {
+  color: var(--muted) !important;
+}
+
+.segmented button.selected {
+  background: var(--surface-raised) !important;
+  color: var(--text) !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,.16) !important;
+}
+
+.switch-row,.loop-switch,.onion-switch {
+  color: var(--muted) !important;
+}
+
+.switch-row input:checked+i {
+  background: var(--cyan) !important;
+}
+
+.layer-row:hover,.frame-cell:hover {
+  background: var(--surface-3) !important;
+  border-color: var(--line) !important;
+}
+
+.layer-row.active,.frame-cell.active {
+  background: var(--selected) !important;
+  border-color: var(--cyan) !important;
+  color: var(--text) !important;
+  box-shadow: 0 0 0 1px color-mix(in srgb,var(--cyan) 25%,transparent) !important;
+}
+
+.layer-name-input,.fps-input,.clip-select,.hex-color-input,.field input,.field select,.field textarea {
+  background: var(--input-bg) !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+}
+
+.layer-name-input:focus,.fps-input:focus,.clip-select:focus,.hex-color-input:focus,.field input:focus,.field select:focus,.field textarea:focus {
+  border-color: var(--cyan) !important;
+}
+
+.count-pill {
+  background: var(--surface-3) !important;
+  color: var(--muted) !important;
+}
+
+.right-tip,.tool-hint {
+  background: var(--surface-2) !important;
+  border-color: var(--line) !important;
+  color: var(--muted) !important;
+}
+
+.right-tip b,.tool-hint b {
+  color: var(--text) !important;
+}
+
+.right-tip p {
+  color: var(--muted) !important;
+}
+
+.modal {
+  background: var(--surface) !important;
+  border-color: var(--line) !important;
+  color: var(--text) !important;
+}
+
+.modal-header,.modal-footer {
+  border-color: var(--line) !important;
+}
+
+.modal-close {
+  color: var(--muted) !important;
+}
+
+.field label,.field-help,.modal-actions-note {
+  color: var(--muted) !important;
+}
+
+.modal-button {
+  background: var(--surface-2) !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+}
+
+.modal-button:hover {
+  background: var(--surface-3) !important;
+  border-color: var(--cyan) !important;
+}
+
+.modal-button.danger {
+  background: color-mix(in srgb,var(--coral) 14%,var(--surface)) !important;
+  color: var(--coral) !important;
+  border-color: color-mix(in srgb,var(--coral) 48%,var(--line)) !important;
+}
+
+.menu-popover {
+  background: var(--surface) !important;
+  border-color: var(--line) !important;
+}
+
+.menu-popover button {
+  color: var(--muted) !important;
+}
+
+.menu-popover button:hover {
+  background: var(--surface-3) !important;
+  color: var(--text) !important;
+}
+
+.menu-popover .menu-sep {
+  background: var(--line) !important;
+}
+
+.export-choice {
+  background: var(--surface-2) !important;
+  border-color: var(--line) !important;
+  color: var(--text) !important;
+}
+
+.export-choice:hover {
+  background: var(--surface-3) !important;
+  border-color: var(--cyan) !important;
+}
+
+.export-choice b {
+  color: var(--text) !important;
+}
+
+.export-choice small {
+  color: var(--muted) !important;
+}
+
+.toast {
+  background: var(--surface-raised) !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+}
+
+.toast.error {
+  background: color-mix(in srgb,var(--coral) 15%,var(--surface)) !important;
+  color: var(--coral) !important;
+  border-color: var(--coral) !important;
+}
+
+.selection-toolbar .selection-cancel {
+  background: var(--surface-2) !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+}
+
+.selection-toolbar .selection-apply {
+  background: var(--cyan) !important;
+  color: var(--button-text) !important;
+  border-color: var(--cyan) !important;
+}
+
+.drop-target {
+  border-color: var(--amber) !important;
+  background: color-mix(in srgb,var(--amber) 14%,var(--surface)) !important;
+}
+
+.canvas-stack {
+  box-shadow: 0 22px 58px rgba(0,0,0,.25),0 0 0 1px color-mix(in srgb,var(--line) 75%,transparent) !important;
+}
+
+.canvas-empty-hint {
+  color: var(--muted) !important;
+}
+
+.hint-key,kbd {
+  background: var(--surface-2);
+  border-color: var(--line) !important;
+  color: var(--muted) !important;
+}
+
+.swatch.active {
+  outline: 2px solid var(--cyan) !important;
+  outline-offset: 3px !important;
+}
+
+.color-current-label b,.palette-title {
+  color: var(--muted) !important;
+}
+
+.toolbar-toggle.active,.tips-toggle.tips-enabled {
+  background: var(--selected) !important;
+  border-color: var(--cyan) !important;
+  color: var(--cyan) !important;
+}
+
+.document-dot {
+  background: var(--cyan) !important;
+  box-shadow: 0 0 12px color-mix(in srgb,var(--cyan) 46%,transparent) !important;
+}
+
+.panel-add:hover,.add-frame-btn:hover {
+  color: var(--cyan) !important;
+}
+
+.button:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible {
+  outline: 2px solid var(--focus-ring) !important;
+  outline-offset: 2px !important;
+}
+
+:root[data-theme="dark"] .brand-splash,:root[data-theme="dark"] .exit-screen {
+  background: #080B10 !important;
+}
+
+:root[data-theme="light"] .brand-splash,:root[data-theme="light"] .exit-screen {
+  background: #080B10 !important;
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .tool-button,.button,.layer-row,.frame-cell,.menu-popover {
+    transition: none !important;
+  }
+}
+
+/* Canvas and frame thumbnails use purpose-designed transparency checks, not UI surface tokens. */
+
+:root[data-theme="dark"] {
+  --checker-a: #1A222D;
+  --checker-b: #242F3C;
+}
+
+:root[data-theme="light"] {
+  --checker-a: #F8FAFC;
+  --checker-b: #E1E8F0;
+}
+
+/* The main canvas checker is drawn by .canvas-stack::before below. */
+
+.frame-cell canvas {
+  background-color: var(--checker-a) !important;
+  background-image: linear-gradient(45deg,var(--checker-b) 25%,transparent 25%),linear-gradient(-45deg,var(--checker-b) 25%,transparent 25%),linear-gradient(45deg,transparent 75%,var(--checker-b) 75%),linear-gradient(-45deg,transparent 75%,var(--checker-b) 75%) !important;
+}
+
+:root[data-theme="dark"] .brand-name span {
+  color: #C7FF43 !important;
+}
+
+:root[data-theme="light"] .brand-name span {
+  color: #557B00 !important;
+}

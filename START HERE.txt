@@ -1,0 +1,35 @@
+SPRITE CREATOR 1.11.1 — DEVELOPER BUILD
+
+This folder is the source/developer package. It is not the share package.
+
+BRAND ASSETS
+- Official Windows/app icon: assets\sprite-creator.ico
+- Official logo PNG: assets\sprite-creator.png
+- Usage and color guide: BRAND GUIDE.md
+
+QUICK START
+1. Extract the complete ZIP.
+2. Install Node.js 22.12 or newer.
+3. Double-click Launch Sprite Creator.bat (or Launch Dev.bat).
+4. The first run downloads the exact-pinned Electron development dependencies and creates package-lock.json. Commit that lockfile before using CI for public releases.
+
+BUILD WINDOWS RELEASES
+- Double-click Build Windows Release.bat.
+- The script runs project checks and builds:
+  * Sprite-Creator-1.11.1-Setup.exe
+  * Sprite-Creator-1.11.1-Portable.exe
+- Both include Electron's runtime. End users do not need Node.js/npm.
+
+BUILD A SELF-CONTAINED SHARE PACKAGE
+- Double-click Create Share Package.bat.
+- Output: dist\Sprite-Creator-1.11.1-Portable.zip
+- This share package uses Edge/Chrome and does not require Node.js.
+
+BROWSER PREVIEW
+- Launch Browser Preview.bat opens src\index.html in Edge/Chrome.
+
+BEFORE DISTRIBUTING A NATIVE WINDOWS BUILD
+Run it on a clean Windows 10/11 machine and check startup, window controls,
+project open/save, drawing, animation, PNG alpha, sprite-sheet export and exit.
+The native binaries are unsigned in this source configuration; use your own
+code-signing certificate for a public distribution release.

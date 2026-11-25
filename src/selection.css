@@ -1,0 +1,386 @@
+/* 1.9.9 — restrained pixel-editor selection treatment. The ants are rendered
+   in CSS screen space; resize handles appear only on hover or during transforms. */
+
+.selection-frame {
+  position: absolute;
+  z-index: 5;
+  box-sizing: border-box;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.selection-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(90deg,#10141B 0 2px,#FFFFFF 2px 4px) top left/4px 1px repeat-x,
+  repeating-linear-gradient(90deg,#10141B 0 2px,#FFFFFF 2px 4px) bottom left/4px 1px repeat-x,
+  repeating-linear-gradient(180deg,#10141B 0 2px,#FFFFFF 2px 4px) top left/1px 4px repeat-y,
+  repeating-linear-gradient(180deg,#10141B 0 2px,#FFFFFF 2px 4px) top right/1px 4px repeat-y;
+  animation: selection-march .55s steps(1,end) infinite;
+}
+
+@keyframes selection-march {
+  to {
+    background-position: 4px 0,-4px 100%,0 4px,100% -4px;
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .selection-frame::before {
+    animation: none;
+  }
+}
+
+/* 1.10.1 — fixed selection action dock beside the artboard.
+   Its width is reserved from the initial layout so toggling selection state
+   never changes canvas dimensions, zoom, or scroll position. */
+
+.canvas-work-area {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  align-items: stretch;
+  gap: 0;
+}
+
+.canvas-work-area > .canvas-viewport {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 0;
+  width: auto;
+}
+
+.selection-dock {
+  box-sizing: border-box;
+  flex: 0 0 92px;
+  width: 92px;
+  min-width: 92px;
+  min-height: 0;
+  margin: 10px 9px 10px 8px;
+  padding: 10px 7px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 7px 22px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.035);
+  scrollbar-width: thin;
+  scrollbar-color: var(--surface-3) transparent;
+}
+
+.selection-dock::-webkit-scrollbar {
+  width: 5px;
+}
+
+.selection-dock::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.selection-dock::-webkit-scrollbar-thumb {
+  background: var(--surface-3);
+  border-radius: 8px;
+}
+
+.selection-dock-heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 2px 0 7px;
+  border-bottom: 1px solid var(--line-soft);
+  color: var(--muted);
+  font: 800 9px 'DM Mono',monospace;
+  letter-spacing: .10em;
+}
+
+.selection-dock-mark {
+  font-size: 17px;
+  color: var(--cyan);
+  line-height: 1;
+}
+
+.selection-dock-idle {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 8px 2px;
+  text-align: center;
+}
+
+.selection-dock-idle p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.55;
+}
+
+.selection-dock-idle kbd {
+  min-width: 21px;
+  padding: 3px 5px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: var(--surface-2);
+  color: var(--muted);
+  font: 700 9px 'DM Mono',monospace;
+}
+
+.selection-dock-activate {
+  width: 100%;
+  min-height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid color-mix(in srgb,var(--cyan) 48%,var(--line));
+  border-radius: 7px;
+  background: color-mix(in srgb,var(--cyan) 12%,var(--surface-2));
+  color: var(--text);
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.selection-dock-activate:hover:not(:disabled) {
+  border-color: var(--cyan);
+  background: color-mix(in srgb,var(--cyan) 20%,var(--surface-2));
+}
+
+.selection-dock-activate:disabled {
+  opacity: .5;
+  cursor: default;
+}
+
+.selection-dock-actions {
+  display: none;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 9px;
+  min-height: 0;
+}
+
+.selection-dock.is-active .selection-dock-idle {
+  display: none;
+}
+
+.selection-dock.is-active .selection-dock-actions {
+  display: flex;
+}
+
+.selection-dock-hint {
+  margin: 0;
+  padding: 7px 6px;
+  border-radius: 7px;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 9px;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.selection-dock-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.selection-dock-group-label {
+  margin: 0 0 2px;
+  color: var(--dim);
+  font: 800 8px 'DM Mono',monospace;
+  letter-spacing: .09em;
+  text-align: center;
+}
+
+.selection-dock-button {
+  width: 100%;
+  min-height: 31px;
+  padding: 5px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 7px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: 9px;
+  font-weight: 750;
+  line-height: 1.1;
+  text-align: left;
+  cursor: pointer;
+  transition: background .12s,border-color .12s,color .12s,transform .12s;
+}
+
+.selection-dock-icon {
+  flex: 0 0 17px;
+  width: 17px;
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+}
+
+.selection-dock-button:hover:not(:disabled) {
+  border-color: color-mix(in srgb,var(--cyan) 55%,var(--line));
+  background: color-mix(in srgb,var(--cyan) 12%,var(--surface-2));
+  color: var(--text);
+}
+
+.selection-dock-button:hover:not(:disabled) .selection-dock-icon {
+  color: var(--cyan);
+}
+
+.selection-dock-button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.selection-dock-button:focus-visible,.selection-dock-activate:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+.selection-dock-button:disabled {
+  opacity: .38;
+  cursor: not-allowed;
+  filter: saturate(.5);
+}
+
+.selection-dock-divider {
+  height: 1px;
+  flex: 0 0 1px;
+  background: var(--line-soft);
+  margin: 0 3px;
+}
+
+.selection-dock-confirm {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: auto;
+}
+
+.selection-dock .selection-apply {
+  border-color: color-mix(in srgb,var(--green) 65%,var(--line));
+  background: color-mix(in srgb,var(--green) 17%,var(--surface-2));
+}
+
+.selection-dock .selection-apply .selection-dock-icon {
+  color: var(--green);
+}
+
+.selection-dock .selection-apply:hover:not(:disabled) {
+  border-color: var(--green);
+  background: color-mix(in srgb,var(--green) 25%,var(--surface-2));
+}
+
+.selection-dock .selection-cancel {
+  border-color: color-mix(in srgb,var(--coral) 55%,var(--line));
+  background: color-mix(in srgb,var(--coral) 10%,var(--surface-2));
+}
+
+.selection-dock .selection-cancel .selection-dock-icon {
+  color: var(--coral);
+}
+
+.selection-dock .selection-deselect {
+  margin-top: 2px;
+  background: transparent;
+  border-color: var(--line-soft);
+  color: var(--muted);
+}
+
+.selection-dock .selection-deselect:hover:not(:disabled) {
+  border-color: var(--coral);
+  background: color-mix(in srgb,var(--coral) 9%,var(--surface-2));
+  color: var(--text);
+}
+
+.selection-dock .selection-deselect:hover:not(:disabled) .selection-dock-icon {
+  color: var(--coral);
+}
+
+:root[data-theme="dark"] .selection-dock {
+  background: #141A23;
+  border-color: #354252;
+}
+
+:root[data-theme="dark"] .selection-dock-hint {
+  background: #1C2531;
+  color: #C1CAD5;
+}
+
+:root[data-theme="light"] .selection-dock {
+  background: #FCFDFE;
+  border-color: #BAC6D3;
+}
+
+:root[data-theme="light"] .selection-dock-hint {
+  background: #E9EEF3;
+  color: #465363;
+}
+
+@media (max-width:1080px) {
+  .selection-dock {
+    flex-basis: 66px;
+    width: 66px;
+    min-width: 66px;
+    margin-left: 5px;
+    margin-right: 6px;
+    padding: 8px 5px;
+  }
+  .selection-dock-heading {
+    font-size: 0;
+  }
+  .selection-dock-heading .selection-dock-mark {
+    font-size: 18px;
+  }
+  .selection-dock-idle p,.selection-dock-group-label,.selection-dock-hint,.selection-dock-button>span:last-child,.selection-dock-activate>span:last-child {
+    display: none;
+  }
+  .selection-dock-button,.selection-dock-activate {
+    justify-content: center;
+    min-height: 34px;
+    padding: 5px 2px;
+  }
+  .selection-dock-icon {
+    flex-basis: auto;
+    width: auto;
+    font-size: 17px;
+  }
+  .selection-dock-idle {
+    gap: 9px;
+  }
+  .selection-dock-activate {
+    font-size: 0;
+  }
+}
+
+@media (max-width:760px) {
+  .selection-dock {
+    flex-basis: 52px;
+    width: 52px;
+    min-width: 52px;
+    margin: 5px 4px;
+    padding: 6px 3px;
+    gap: 7px;
+  }
+  .selection-dock-button,.selection-dock-activate {
+    min-height: 31px;
+  }
+  .selection-dock-icon {
+    font-size: 15px;
+  }
+}

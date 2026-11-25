@@ -1,0 +1,261 @@
+/* 1.9.4: stable canvas sizing in maximized Windows windows and display scaling. */
+
+.app-shell {
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0 !important;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.editor-layout {
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.center-stage {
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.canvas-viewport {
+  min-height: 0 !important;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.canvas-surround {
+  min-width: 100%;
+  min-height: 100%;
+}
+
+/* 1.9.5 — reliable zoom-aware transparency checkerboard.
+   The checker lives on its own pseudo-layer so canvas pixels remain transparent
+   and the Solid backdrop control can switch it off without fighting !important. */
+
+:root[data-theme="dark"] {
+  --checker-a: #171E28;
+  --checker-b: #263342;
+  --canvas-workspace: #0D1219;
+  --canvas-solid: #202B38;
+}
+
+:root[data-theme="light"] {
+  --checker-a: #FAFBFC;
+  --checker-b: #DCE3EA;
+  --canvas-workspace: #D2DAE3;
+  --canvas-solid: #EEF2F6;
+}
+
+.canvas-viewport {
+  background-color: var(--canvas-workspace) !important;
+  background-image: none !important;
+}
+
+.canvas-stack {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background-color: var(--checker-a) !important;
+  background-image: none !important;
+}
+
+.canvas-stack::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-color: var(--checker-a);
+  background-image: conic-gradient(var(--checker-b) 25%,var(--checker-a) 0 50%,var(--checker-b) 0 75%,var(--checker-a) 0);
+  background-size: var(--checker-size,16px) var(--checker-size,16px);
+  background-repeat: repeat;
+}
+
+.canvas-stack.checker-off {
+  background-color: var(--canvas-solid) !important;
+}
+
+.canvas-stack.checker-off::before {
+  display: none;
+}
+
+.canvas-stack .canvas-layer {
+  z-index: 1;
+  background: transparent !important;
+}
+
+.canvas-stack .overlay-layer {
+  z-index: 3;
+}
+
+.canvas-stack.grid-on::after {
+  z-index: 2;
+}
+
+/* 1.9.6 — compact transparency checks and legible pixel grid.
+   The conic tile is 8px, producing 4px checker squares at every canvas zoom.
+   Grid lines use normal blending so Onyx remains clearly visible over dark pixels. */
+
+:root[data-theme="dark"] {
+  --checker-a: #171E28;
+  --checker-b: #263342;
+  --pixel-grid-line: rgba(210,224,244,.38);
+}
+
+:root[data-theme="light"] {
+  --checker-a: #FAFBFC;
+  --checker-b: #DCE3EA;
+  --pixel-grid-line: rgba(31,45,62,.30);
+}
+
+.canvas-stack::before {
+  background-size: 8px 8px !important;
+}
+
+.canvas-stack.grid-on::after {
+  background-image: linear-gradient(to right,var(--pixel-grid-line) 1px,transparent 1px),
+    linear-gradient(to bottom,var(--pixel-grid-line) 1px,transparent 1px) !important;
+  background-size: var(--pixel-size,1px) var(--pixel-size,1px) !important;
+  opacity: var(--grid-opacity,0) !important;
+  mix-blend-mode: normal !important;
+}
+
+/* 1.9.7 — professional artboard and crisp, continuous pixel grid.
+   The pixel grid is rendered only at integral zoom levels by renderer.js,
+   so each 1px line lands on a whole CSS-pixel boundary instead of aliasing. */
+
+:root[data-theme="dark"] {
+  --canvas-workspace: #11151C;
+  --checker-a: #202630;
+  --checker-b: #181D25;
+  --canvas-solid: #252C36;
+  --canvas-edge: rgba(235, 242, 255, .24);
+  --pixel-grid-line: rgba(239, 244, 255, .42);
+  --artboard-shadow: 0 18px 48px rgba(0, 0, 0, .48), 0 0 0 1px rgba(236, 242, 255, .18);
+}
+
+:root[data-theme="light"] {
+  --canvas-workspace: #D8DDE4;
+  --checker-a: #F7F8FA;
+  --checker-b: #E4E8ED;
+  --canvas-solid: #F7F8FA;
+  --canvas-edge: rgba(34, 43, 55, .30);
+  --pixel-grid-line: rgba(25, 34, 46, .34);
+  --artboard-shadow: 0 18px 42px rgba(34, 42, 52, .20), 0 0 0 1px rgba(34, 43, 55, .20);
+}
+
+.canvas-viewport {
+  background: var(--canvas-workspace) !important;
+  background-image: none !important;
+}
+
+.canvas-stack {
+  isolation: isolate;
+  overflow: hidden;
+  outline: 1px solid var(--canvas-edge);
+  outline-offset: 0;
+  box-shadow: var(--artboard-shadow) !important;
+  image-rendering: pixelated;
+}
+
+.canvas-stack::before {
+  background-color: var(--checker-a);
+  background-image: conic-gradient(var(--checker-b) 25%, var(--checker-a) 0 50%, var(--checker-b) 0 75%, var(--checker-a) 0);
+  background-size: 8px 8px !important;
+  background-position: 0 0;
+  background-repeat: repeat;
+}
+
+.canvas-stack.checker-off {
+  background: var(--canvas-solid) !important;
+}
+
+.canvas-stack.checker-off::before {
+  display: none !important;
+}
+
+.canvas-stack.grid-on::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background-image: linear-gradient(90deg, var(--pixel-grid-line) 0 1px, transparent 1px 100%),
+    linear-gradient(180deg, var(--pixel-grid-line) 0 1px, transparent 1px 100%);
+  background-size: var(--pixel-size) var(--pixel-size);
+  background-position: 0 0;
+  background-repeat: repeat;
+  opacity: 1 !important;
+  mix-blend-mode: normal !important;
+}
+
+.canvas-stack .canvas-layer {
+  background: transparent !important;
+}
+
+/* 1.9.8 — independent application and artboard themes.
+   UI surfaces continue to follow data-theme; transparency artboard surfaces,
+   checkerboards, thumbnails, and pixel-grid contrast follow data-canvas-theme. */
+
+:root[data-canvas-theme="dark"] {
+  --checker-a: #252B35;
+  --checker-b: #1B2029;
+  --canvas-workspace: #11151C;
+  --canvas-solid: #252C36;
+  --canvas-edge: rgba(225,235,250,.28);
+  --pixel-grid-line: rgba(238,244,255,.42);
+  --artboard-shadow: 0 18px 48px rgba(0,0,0,.48),0 0 0 1px rgba(236,242,255,.18);
+}
+
+:root[data-canvas-theme="light"] {
+  --checker-a: #F8FAFC;
+  --checker-b: #E2E7EE;
+  --canvas-workspace: #D5DCE5;
+  --canvas-solid: #F8FAFC;
+  --canvas-edge: rgba(31,43,58,.30);
+  --pixel-grid-line: rgba(27,39,54,.34);
+  --artboard-shadow: 0 18px 42px rgba(34,42,52,.20),0 0 0 1px rgba(34,43,55,.20);
+}
+
+:root[data-canvas-theme="dark"] .canvas-viewport,:root[data-canvas-theme="light"] .canvas-viewport {
+  background: var(--canvas-workspace) !important;
+}
+
+:root[data-canvas-theme="dark"] .canvas-stack,:root[data-canvas-theme="light"] .canvas-stack {
+  background-color: var(--checker-a) !important;
+  outline-color: var(--canvas-edge) !important;
+  box-shadow: var(--artboard-shadow) !important;
+}
+
+:root[data-canvas-theme="dark"] .canvas-stack::before,:root[data-canvas-theme="light"] .canvas-stack::before {
+  background-color: var(--checker-a) !important;
+  background-image: conic-gradient(var(--checker-b) 25%,var(--checker-a) 0 50%,var(--checker-b) 0 75%,var(--checker-a) 0) !important;
+}
+
+:root[data-canvas-theme="dark"] .canvas-stack.checker-off,:root[data-canvas-theme="light"] .canvas-stack.checker-off {
+  background: var(--canvas-solid) !important;
+}
+
+:root[data-canvas-theme="dark"] .canvas-stack.checker-off::before,:root[data-canvas-theme="light"] .canvas-stack.checker-off::before {
+  display: none !important;
+}
+
+:root[data-canvas-theme="dark"] .canvas-stack.grid-on::after,:root[data-canvas-theme="light"] .canvas-stack.grid-on::after {
+  background-image: linear-gradient(90deg,var(--pixel-grid-line) 0 1px,transparent 1px 100%),
+    linear-gradient(180deg,var(--pixel-grid-line) 0 1px,transparent 1px 100%) !important;
+}
+
+:root[data-canvas-theme="dark"] .frame-cell canvas,:root[data-canvas-theme="light"] .frame-cell canvas {
+  background-color: var(--checker-a) !important;
+  background-image: linear-gradient(45deg,var(--checker-b) 25%,transparent 25%),
+    linear-gradient(-45deg,var(--checker-b) 25%,transparent 25%),
+    linear-gradient(45deg,transparent 75%,var(--checker-b) 75%),
+    linear-gradient(-45deg,transparent 75%,var(--checker-b) 75%) !important;
+}
+
+.theme-toggle {
+  min-width: 84px;
+}

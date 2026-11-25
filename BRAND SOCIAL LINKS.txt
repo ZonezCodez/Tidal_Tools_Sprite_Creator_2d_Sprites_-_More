@@ -1,0 +1,9 @@
+SPRITE CREATOR — SOCIAL LINKS
+
+When official social profiles are ready, edit src/brand-config.js.
+Add real HTTPS accounts to the socials array. Example:
+  { name: "YouTube", handle: "@yourchannel", url: "https://www.youtube.com/@yourchannel" },
+  { name: "Discord", handle: "Join the community", url: "https://discord.gg/yourinvite" }
+
+Do not distribute placeholder or fabricated handles. Empty accounts show a
+small "Social links coming soon" message on the goodbye screen.

@@ -1,0 +1,22 @@
+SPRITE CREATOR 1.11.1 — PORTABLE SHARE BUILD
+
+1. Extract the ZIP to a folder.
+2. Double-click Launch Sprite Creator.bat.
+3. The application opens in a familiar Edge/Chrome app window.
+
+REQUIREMENTS
+- Windows 10/11
+- Microsoft Edge or Google Chrome
+- No Node.js, npm, Electron download, account, or internet connection needed
+
+ABOUT THIS PACKAGE
+- Includes the official Sprite Creator Logo.png, Sprite Creator Windows Icon.ico, and Sprite Creator Brand Guide.md brand assets.
+The complete application is packed into one local Sprite Creator.html file.
+The launcher simply opens it in an isolated browser profile.
+Use File → Exit with thank-you screen to play the farewell sequence. Browser
+security does not allow a local page to intercept the window's native X button.
+
+SAVE YOUR WORK
+Use File → Save Project to download a .spritecreator project file. Keep that
+file somewhere safe so you can reopen it later or move it to another computer.
+The app does not upload artwork to a server.
